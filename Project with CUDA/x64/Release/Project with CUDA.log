@@ -1,0 +1,18 @@
+﻿D:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: Ara dizin (x64\Release\) başka bir projeden (Project with CUDA.vcxproj) paylaşılan dosyalar içeriyor. Bu, hatalı temizleme ve yeniden oluşturma davranışına neden olabilir.
+  Compiling CUDA source file Main.cu...
+  
+  C:\Users\B3Y\source\repos\Project with CUDA\Project with CUDA>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\bin\nvcc.exe" -gencode=arch=compute_52,code=\"sm_52,compute_52\" --use-local-env -ccbin "D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.36.32532\bin\HostX64\x64" -x cu   -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\include"     --keep-dir x64\Release  -maxrregcount=0   --machine 64 --compile -cudart static    -DNDEBUG -D_CONSOLE -D"_UNICODE" -D"UNICODE" -Xcompiler "/EHsc /W3 /nologo /O2 /FS   /MD " -Xcompiler "/Fdx64\Release\vc143.pdb" -o "C:\Users\B3Y\source\repos\Project with CUDA\Project with CUDA\x64\Release\Main.cu.obj" "C:\Users\B3Y\source\repos\Project with CUDA\Project with CUDA\Main.cu" 
+C:\Users\B3Y\source\repos\Project with CUDA\Project with CUDA\Main.cu(20): warning #177-D: variable "numBlocks" was declared but never referenced
+        int numBlocks = 1;
+            ^
+  
+  Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+  
+C:\Users\B3Y\source\repos\Project with CUDA\Project with CUDA\Main.cu(21): warning #177-D: variable "threadsPerBlock" was declared but never referenced
+        int threadsPerBlock = 100;
+            ^
+  
+  Main.cu
+  tmpxft_000028dc_00000000-7_Main.cudafe1.cpp
+  LINK : /LTCG belirtildi ancak kod üretme gerekli değil; bağlayıcı performansını artırmak için /LTCG'yi bağlantı komut satırından kaldırın
+  Project with CUDA.vcxproj -> C:\Users\B3Y\source\repos\Project with CUDA\x64\Release\running race using cuda.exe
