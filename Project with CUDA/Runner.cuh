@@ -1,7 +1,11 @@
 #ifndef RUNNER_H
 #define RUNNER_H
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
+
 
 #define NUM_RUNNERS 100
 #define MAX_SPEED 5.0f
@@ -18,6 +22,7 @@ public:
 };
 
 Runner::Runner() {
+
     speed = ((float)rand() / RAND_MAX) * (MAX_SPEED - MIN_SPEED) + MIN_SPEED;
     position = 0.0f;
 }

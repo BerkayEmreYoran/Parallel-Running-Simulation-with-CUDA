@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
 #include "Runner.cuh"
 
 void delay(int milliseconds) {
@@ -16,28 +11,29 @@ __global__ void updatePositions(Runner* runners) {
 }
 
 int main() {
+    srand(time(NULL));
     Runner runners[NUM_RUNNERS];
     int numBlocks = 1;
     int threadsPerBlock = NUM_RUNNERS;
     int step = 1;
-    int updateInterval = 1000 / TIME_INTERVAL; // Konum güncelleme aralýðý
+    int updateInterval = 1000 / TIME_INTERVAL; // Konum guncelleme araligi
 
-    // Koþucularýn konumunu ve hýzýný bellekte CUDA global hafýzasýna kopyalama
+    // Kosucularin konumunu ve hizini bellekte CUDA global hafizasina kopyalama
     Runner* d_runners;
     cudaMalloc((void**)&d_runners, NUM_RUNNERS * sizeof(Runner));
     cudaMemcpy(d_runners, runners, NUM_RUNNERS * sizeof(Runner), cudaMemcpyHostToDevice);
 
     while (1) {
-        // Koþucularýn konumunu güncelleme
+        // Kosucularin konumunu guncelleme
         dim3 numBlocks(1);
         dim3 threadsPerBlock(NUM_RUNNERS);
         updatePositions << <numBlocks, threadsPerBlock >> > (d_runners);
         cudaDeviceSynchronize();
 
-        // Koþucularýn konumunu ve hýzýný CUDA global hafýzasýndan ana belleðe kopyalama
+        // Kosucularin konumunu ve hizini CUDA global hafizasindan ana bellege kopyalama
         cudaMemcpy(runners, d_runners, NUM_RUNNERS * sizeof(Runner), cudaMemcpyDeviceToHost);
 
-        // Bitiþ çizgisine ilk ulaþan koþucunun indeksini bulma
+        // Bitis cizgisine ilk ulasan kosucunun indeksini bulma
         int winnerIndex = -1;
         for (int j = 0; j < NUM_RUNNERS; j++) {
             if (runners[j].position >= RACE_DISTANCE) {
@@ -46,9 +42,9 @@ int main() {
             }
         }
 
-        // Bitiþ çizgisine ulaþan tüm koþucularýn konumunu yazdýrma
+        // Yaris bittiginde her kosucunun guncel konumu
         if (winnerIndex != -1) {
-            printf("Bitis cizgisine ulasan kosucularin konumu:\n");
+            printf("Yaris bittiginde her kosucunun guncel konumu:\n");
             for (int j = 0; j < NUM_RUNNERS; j++) {
                 printf("Kosucu %d: %.2f metre\n", j + 1, runners[j].position);
             }
@@ -67,13 +63,13 @@ int main() {
         step++;
     }
 
-    // Yarýþýn sýralamasýný hesaplama
+    // Yarisin siralamasini hesaplama
     int sortedIndices[NUM_RUNNERS];
     for (int i = 0; i < NUM_RUNNERS; i++) {
         sortedIndices[i] = i;
     }
 
-    // Sýralama iþlemi
+    // Siralama islemi
     for (int i = 0; i < NUM_RUNNERS - 1; i++) {
         for (int j = i + 1; j < NUM_RUNNERS; j++) {
             if (runners[sortedIndices[i]].position < runners[sortedIndices[j]].position) {
@@ -84,8 +80,8 @@ int main() {
         }
     }
 
-    // Yarýþýn sýralamasýný yazdýrma
-    printf("Yarisinn siralamasi:\n");
+    // Yarisin siralamasini yazdirma
+    printf("Yarisin siralamasi:\n");
     for (int i = 0; i < NUM_RUNNERS; i++) {
         printf("Sira %d: Kosucu %d\n", i + 1, sortedIndices[i] + 1);
     }
